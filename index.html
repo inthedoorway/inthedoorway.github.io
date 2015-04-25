@@ -1,0 +1,261 @@
+<html>
+
+	<head>
+
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible">
+   		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+		<title>In the Doorway</title>
+
+		<link rel="icon" 
+	      type="image/png" 
+	      href="images/logo.png">
+
+		<!-- FONTS -->
+
+		<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600,700' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+		<!-- LOAD CSS -->
+		<link rel="stylesheet" type="text/css" href="css/main.css">
+		<link rel="stylesheet" type="text/css" href="css/jquery.countdown.css">
+
+		<!-- SCRIPTS -->
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<script src="js/jquery.plugin.js"></script>
+		<script src="js/jquery.countdown.min.js"></script>
+		<script src="js/two.js"></script>
+		<script src="js/underscore.js"></script>
+		<script src="js/url.js"></script>
+
+		<script>
+		$(function () {
+			var newYear = new Date(); 
+			newYear = new Date(2015, 5-1, 2); 
+			$('#timer').countdown({until: newYear}); 
+		});
+		</script>
+
+	</head>
+
+	<body>
+
+	<div id="topsite">
+
+			<div id="top">
+				<img src="images/logo.png" />
+
+				<a class="button" href="#timer">home</a>
+				<a class="button" href="#about">about</a>
+				<a class="button" href="#contact">contact</a>
+			</div>
+
+			<div class="tab-content">
+
+				<div id="timer" class="tab active"></div>
+
+				<div id="about" class="tab">
+					<h1>Hey!</h1>
+					<p>In the Doorway is collaborative project between <b>Adenike Adelekan</b> and <b>Niki Murphy</b>. Reflecting on recent travels, Nike and Niki began In the Doorway to explore cultural intersections of Japan, South Korea, and the US.<br /><br /> Featuring artists, writers, and more from these respective countries, projects include an art exhibition, a film showcase, and an upcoming limited edition publication coming out May 2nd. Stay tuned!<br /><br />&mdash; Nike & Niki</p>
+				</div>
+
+				<div id="contact" class="tab">
+					<h2><i class="fa fa-envelope-o" style="padding-right: 15px; margin-bottom: -3px;"></i> <a href="mailto:projectinthedoorway@gmail.com">projectinthedoorway@gmail.com</a></h2>
+				</div>
+
+			</div>
+
+
+		</div>
+
+		<div id="footer">
+		Rizzo, a <a href="http://rizzodaly.com/">cool guy</a>, made this.
+		</div>
+
+		<div class="scripts">
+      <script>
+
+        $(function() {
+
+          var colors = [
+            'rgb(255, 255, 102)',
+            'rgb(51, 255, 153)',
+            'rgb(51, 0, 255)',
+          ];
+
+          var type = /(canvas|webgl)/.test(url.type) ? url.type : 'svg';
+          var two = new Two({
+            type: Two.Types[type],
+            fullscreen: true,
+            autostart: true
+          }).appendTo(document.body);
+
+          var background = two.makeRectangle(two.width / 2, two.height / 2, two.width, two.height);
+          background.noStroke();
+          background.fill = 'rgb(51, 102, 255)';
+          background.name = 'background';
+
+          var container = two.makeGroup(background);
+
+          var rows = Math.floor(two.height / 100);
+          var cols = Math.floor(two.width / 100);
+          var width = Math.round(two.height / Math.max(rows, cols));
+
+          for (var i = 0; i < rows; i++) {
+
+            var even = !!(i % 2);
+            var vi = i / (rows - 1);
+
+            for (var j = 0; j < cols; j++) {
+
+              var k = j;
+
+              if (even) {
+                k += 0.5;
+                if (j >=  cols - 1) {
+                  continue;
+                }
+              }
+
+              var hi = k / (cols - 1);
+
+              var type = !!(j % 2) ? 'Squiggle' : 'Nonagon';
+              var height = !!(j % 2) ? width / 3 : width;
+              var shape = two['make' + type](width, height, Math.floor(Math.random() * 3) + 3);
+              var color = colors[Math.floor(Math.random() * colors.length)];
+
+              shape.rotation = Math.floor(Math.random() * 4) * Math.PI / 2 + Math.PI / 4;
+              shape.translation.set(hi * two.width, vi * two.height);
+
+              if (j % 2) {
+                shape.noFill();
+                shape.stroke = color;
+                shape.linewidth = 4;
+                shape.cap = 'round';
+              } else {
+                shape.noStroke();
+                shape.fill = color;
+              }
+
+              shape.step = (Math.floor(Math.random() * 8) / 8) * Math.PI / 60;
+              shape.step *= Math.random() > 0.5 ? - 1 : 1;
+
+              container.add(shape);
+
+            }
+
+          }
+
+          var cursor = two.makeCircle(0, 0, 250);
+          cursor.outline = two.makeCircle(0, 0, 250);
+          cursor.target = new Two.Vector();
+
+          cursor.outline.noFill();
+          cursor.outline.stroke = 'rgba(0, 100, 255, 0.1)';
+          cursor.outline.linewidth = 20;
+
+          container.mask = cursor;
+          cursor.target.set(two.width / 2, 60);
+          cursor.translation.copy(cursor.target);
+
+          var center = _.debounce(function() {
+            cursor.target.set(two.width / 2, 60);
+          }, 1000);
+
+          var drag = function(e) {
+            cursor.target.set(e.clientX, e.clientY);
+            center();
+          };
+
+          var touchDrag = function(e) {
+            e.preventDefault();
+            var touch = e.originalEvent.changedTouches[0];
+            drag({
+              clientX: touch.pageX,
+              clientY: touch.pageY
+            });
+            return false;
+          };
+
+          $(window)
+            .bind('mousemove', drag)
+            .bind('touchmove', touchDrag);
+
+          two.bind('update', function() {
+
+            cursor.translation.x += (cursor.target.x - cursor.translation.x) * 0.125;
+            cursor.translation.y += (cursor.target.y - cursor.translation.y) * 0.125;
+            cursor.outline.translation.copy(cursor.translation);
+
+            for (var k in container.children) {
+              var child = container.children[k];
+              if (child.name === 'background') {
+                continue;
+              }
+              child.rotation += child.step;
+            }
+
+          });
+
+        });
+
+        Two.prototype.makeSquiggle = function(width, height, phi) {
+
+          var amt = 64;
+
+          var squiggle = this.makeCurve(
+            _.map(_.range(amt), function(i) {
+              var pct = i / (amt - 1);
+              var theta = pct * Math.PI * 2 * phi + Math.PI / 2;
+              var x = width * pct - width / 2;
+              var y = height / 2 * Math.sin(theta);
+              return new Two.Anchor(x, y);
+            }),
+            true
+          );
+
+          return squiggle;
+
+        };
+
+        Two.prototype.makeNonagon = function(width, height, sides) {
+
+          width /= 2;
+          height /= 2;
+
+          var shape = this.makePolygon(
+            _.map(_.range(sides), function(i) {
+              var pct = i / sides;
+              var theta = Math.PI * 2 * pct - Math.PI / 2;
+              var x = width * Math.cos(theta);
+              var y = height * Math.sin(theta);
+              return new Two.Anchor(x, y);
+            })
+          );
+
+          return shape;
+
+        };
+
+      </script>
+    </div>
+
+    <script>
+    jQuery(document).ready(function() {
+    jQuery('a.button').on('click', function(e)  {
+        var currentAttrValue = jQuery(this).attr('href');
+ 
+        // Show/Hide Tabs
+        jQuery('.tab-content ' + currentAttrValue).fadeIn(400).siblings().hide();
+ 
+        e.preventDefault();
+    });
+});
+
+    </script>
+
+	</body>
+
+</html>
