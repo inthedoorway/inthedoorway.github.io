@@ -3,7 +3,6 @@
 *, body {
 	margin: 0;
 	padding: 0;
-	overflow: scroll;
 }
 
 body {
@@ -70,7 +69,6 @@ body {
 	left: 50%;
 	margin-left: -512px;
 	z-index: 1000;
-	overflow: scroll;
 	height: 800px;
 }
 
@@ -160,7 +158,6 @@ p b {
 /*tab stuff*/
 
 .tab-content {
-	overflow-y: scroll;
 }
 
 .tab {
