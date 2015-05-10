@@ -72,7 +72,7 @@ body {
 	height: 800px;
 }
 
-#top, #timer {
+#top, #main {
 	z-index: 1000;
 }
 
@@ -95,12 +95,15 @@ body {
 	padding: 0 0 60px 0;
 }
 
-#timer {
+#main {
 	width: 100%;
 	max-width: 800px;
 	min-width: 640px;
-	height: 160px;
+	height: 300px;
 	margin: 0 auto;
+	background-color: #fff;
+	padding: 30px;
+	box-sizing: border-box;
 }
 
 .scripts {
@@ -166,6 +169,20 @@ p b {
 
 .tab.active {
 	display: block;
+}
+
+ul {
+	width: 80%;
+	margin: 0 auto;
+	padding-bottom: 10px;
+	list-style-type: none;
+	text-align: center;
+	font-size: 12px;
+	text-transform: uppercase;
+}
+
+li {
+	display: inline;
 }
 
 /*footer stuff*/
